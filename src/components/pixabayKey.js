@@ -1,0 +1,1 @@
+export const pixabayKey = '39292728-1eb1db6d28a9fb64c22d19118'
