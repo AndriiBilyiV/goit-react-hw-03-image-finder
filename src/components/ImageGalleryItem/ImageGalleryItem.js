@@ -27,10 +27,10 @@ export class ImageGalleryItem extends Component {
         this.setState({isModalOpen: false})
     }
 render() {
-     const { url } = this.props;
+    const { url, alt } = this.props;
       return (
         <ImageWrapper onClick={this.openModal}>
-            <img src={url} width="360" />
+            <img src={url} alt={alt} width="360" />
              <Modal
                   isOpen={this.state.isModalOpen}
                   onRequestClose={this.closeModal}
