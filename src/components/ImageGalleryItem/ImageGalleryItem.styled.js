@@ -5,3 +5,7 @@ export const ImageWrapper = styled.div`
   width: 360px;
   overflow: hidden;
 `
+
+export const Image = styled.img`
+max-height: 80vh;
+`

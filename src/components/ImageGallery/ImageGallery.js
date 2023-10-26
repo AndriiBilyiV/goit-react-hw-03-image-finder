@@ -7,7 +7,8 @@ export const ImageGallery = ({collection}) => {
         <List>
             {collection.map(elm => {
                 return (<ListItem key={nanoid()}><ImageGalleryItem
-                    url={elm.webformatURL}
+                    web={elm.webformatURL}
+                    full={elm.largeImageURL}
                     alt={elm.tags} /></ListItem>) 
             })}
         </List>

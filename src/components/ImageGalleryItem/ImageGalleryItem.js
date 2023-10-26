@@ -1,15 +1,17 @@
-import { ImageWrapper } from "./ImageGalleryItem.styled"
+import { ImageWrapper, Image } from "./ImageGalleryItem.styled"
 import Modal from 'react-modal';
 import { Component } from "react";
+import { nanoid } from "nanoid";
 
 const customStyles = {
-  content: {
+    content: {
+    userSelect: "none",
     top: '50%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
+        transform: 'translate(-50%, -50%)',
     },
     overlay: {zIndex: "1000"}
 };
@@ -27,23 +29,23 @@ export class ImageGalleryItem extends Component {
         this.setState({isModalOpen: false})
     }
 render() {
-    const { url, alt } = this.props;
+    const { web, alt, full } = this.props;
       return (
         <ImageWrapper onClick={this.openModal}>
-            <img src={url} alt={alt} width="360" />
-             <Modal
+            <img src={web} alt={alt} width="360" />
+              <Modal
+                  key={nanoid()}
                   isOpen={this.state.isModalOpen}
                   onRequestClose={this.closeModal}
                   style={customStyles}
-                  contentLabel="Example Modal"
-                  shouldCloseOnOverlayClick={true}
+                  contentLabel="Full size photo"
                   shouldCloseOnEsc={true}
+                  shouldCloseOnOverlayClick={true}
                 >
-        <p>I`m here</p>
+                  <Image src={full} alt={alt} />
       </Modal>
         </ImageWrapper>
     )
     }
 }
-
 
