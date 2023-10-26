@@ -3,7 +3,6 @@ import { styled } from "styled-components";
 export const List = styled.ul`
 user-select: none;
   list-style: none;
-  padding-top: 140px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;

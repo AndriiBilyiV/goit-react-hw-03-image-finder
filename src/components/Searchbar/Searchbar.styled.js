@@ -1,9 +1,13 @@
 import { styled } from "styled-components";
 import { Field, Form  } from "formik";
 
+export const Header = styled.div`
+height: 140px;
+`
+
 export const StyledSearchbar = styled.div`
 position: fixed;
-z-index: 1000;
+z-index: 100;
 width: 100%;
 padding: ${p => p.theme.spacing(6)} 0;
 background-color: ${p => p.theme.colors.glacier};

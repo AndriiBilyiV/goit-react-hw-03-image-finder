@@ -1,10 +1,12 @@
-import { StyledInput, StyledForm, SearchButton, StyledSearchbar, IconWrapper } from "./Searchbar.styled"
+import { StyledInput, StyledForm, SearchButton, StyledSearchbar, IconWrapper, Header } from "./Searchbar.styled"
 import { BsSearch } from 'react-icons/bs';
 import { Formik} from "formik";
 
 
 export const Searchbar = ({onSubmit}) => {
     return (
+        <>
+      
             <StyledSearchbar>
             <Formik
                 initialValues={{
@@ -27,7 +29,8 @@ export const Searchbar = ({onSubmit}) => {
                     </SearchButton>
                 </StyledForm>
                  </Formik>
-       </StyledSearchbar>
-       
+            </StyledSearchbar>
+            <Header />
+       </>
     )
 }
