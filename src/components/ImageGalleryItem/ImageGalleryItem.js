@@ -1,49 +1,23 @@
-import { ImageWrapper, Image } from "./ImageGalleryItem.styled"
-import Modal from 'react-modal';
+import { ImageWrapper } from "./ImageGalleryItem.styled"
 import { Component } from "react";
-import { nanoid } from "nanoid";
-
-const customStyles = {
-    content: {
-    userSelect: "none",
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-    overlay: {zIndex: "1000"}
-};
-
-Modal.setAppElement('#root');
+import { ModalWindow } from "components/Modal/Modal";
 
 export class ImageGalleryItem extends Component {
     state = {
         isModalOpen: false
     }
-    openModal = () => {
-        this.setState({isModalOpen: true})
-    }
-    closeModal = () => {
-        this.setState({isModalOpen: false})
+    toggleModal = () => {
+        this.setState(prevState => ({isModalOpen: !prevState.isModalOpen}))
     }
 render() {
     const { web, alt, full } = this.props;
       return (
-        <ImageWrapper onClick={this.openModal}>
+        <ImageWrapper onClick={this.toggleModal}>
             <img src={web} alt={alt} width="360" />
-              <Modal
-                  key={nanoid()}
-                  isOpen={this.state.isModalOpen}
-                  onRequestClose={this.closeModal}
-                  style={customStyles}
-                  contentLabel="Full size photo"
-                  shouldCloseOnEsc={true}
-                  shouldCloseOnOverlayClick={true}
-                >
-                  <Image src={full} alt={alt} />
-      </Modal>
+              <ModalWindow isShow={this.state.isModalOpen}
+                  close={this.toggleModal}
+                  url={full}
+                  alt={alt}/>
         </ImageWrapper>
     )
     }

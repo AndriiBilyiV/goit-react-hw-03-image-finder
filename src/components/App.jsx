@@ -3,7 +3,7 @@ import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Button } from "./Button/Button";
 import toast, { Toaster } from 'react-hot-toast';
-import { fetchColletion, options } from "./api";
+import { fetchColletion, perPage } from "./api";
 import { Loader } from "./Loader/Loader";
 
 
@@ -22,67 +22,71 @@ export class App extends Component {
     request: '',
     collection: [],
     page: 1,
-    isLoading: false
+    isLoading: false,
+    showBtn: false
   }
   async componentDidUpdate(prevProps, prevState) {
  
       
-    if (prevState.request !== this.state.request) {
-      options.params.q = this.state.request;
-      options.params.page = "1";
+    if (prevState.request !== this.state.request ||
+      prevState.page !== this.state.page) {
+      const data = {
+        page: this.state.page,
+        query: this.state.request
+      }
       this.setState({
-        isLoading: true,
-        collection: []
+        isLoading: true
       })
       try {
-        const result = await fetchColletion(options);
-        this.setState({
-          collection: result,
-          isLoading: false
-        });
-        if (result.length === 0) {
+        const result = await fetchColletion(data)
+        
+        const hits = result.hits;
+        const totalHits = result.totalHits;
+        if (hits.length === 0) {
           notify()
+        } else {
+          this.setState({
+            collection: [...this.state.collection, ...hits],
+            showBtn: (this.state.page<Math.ceil(totalHits/perPage)) ? true : false
+          });
         }
       } catch (err) {
         alert(err)
-      } 
-      }
-    
-    if (prevState.page !== this.state.page) {
-      options.params.page = this.state.page;
-      this.setState({ isLoading: true })
-      try {
-        const result = await fetchColletion(options);
+      } finally {
         this.setState({
-          collection: [...this.state.collection, ...result],
-          isLoading: false
-        })
-      } catch (err) {
-        alert(err)
-      } 
+            isLoading: false
+          })
+      }
     }
   }
-  takeRequest = (req) => {
-    this.setState({request: req})
-  }
-  nextPage = () => {
-    this.setState({page: this.state.page + 1})
-  }
-render() {
-    return (
-      <>
-        <Searchbar onSubmit={this.takeRequest} />
-        <Toaster />
+    takeRequest = (req) => {
+      this.setState({
+        request: req,
+        collection: [],
+        page: 1
+      })
+    }
+    nextPage = () => {
+      this.setState(prevState => ({ page: prevState.page + 1 }))
+    }
+    render() {
+      return (
+        <>
+          <Searchbar onSubmit={this.takeRequest} />
+          <Toaster />
           {this.state.collection.length ?
-          <>
-          <ImageGallery collection={this.state.collection} />
-            <Button handleClick={this.nextPage} />
+            <>
+              <ImageGallery collection={this.state.collection} />
+              {this.state.showBtn ?
+                <Button handleClick={this.nextPage} />
+                : null
+              }
             </>
-          : null
-        }
-        {this.state.isLoading ?
-          <Loader /> : null}
-      </>
-    )
+            : null
+          }
+          {this.state.isLoading ?
+            <Loader /> : null}
+        </>
+      )
+    }
   }
-}
